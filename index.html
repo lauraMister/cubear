@@ -6,10 +6,10 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>Hello WebXR!</title>
 
-<!-- three.js -->
-<script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
-
+  <!-- three.js -->
+  <script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
 <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+
 </head>
 <body>
 
@@ -26,13 +26,13 @@ async function activateXR() {
   // To be continued in upcoming steps.
   const scene = new THREE.Scene();
 
-//light
-  const scene = new THREE.Scene();
+const scene = new THREE.Scene();
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 directionalLight.position.set(10, 15, 10);
 scene.add(directionalLight);
-  
+
+
   // Set up the WebGLRenderer, which handles rendering to the session's base layer.
 const renderer = new THREE.WebGLRenderer({
   alpha: true,
@@ -55,12 +55,14 @@ session.updateRenderState({
 
 // A 'local' reference space has a native origin that is located
 // near the viewer's position at the time the session was created.
-  // Create another XRReferenceSpace that has the viewer as the origin.
+const referenceSpace = await session.requestReferenceSpace('local');
+
+// Create another XRReferenceSpace that has the viewer as the origin.
 const viewerSpace = await session.requestReferenceSpace('viewer');
 // Perform hit testing using the viewer as origin.
 const hitTestSource = await session.requestHitTestSource({ space: viewerSpace });
-const referenceSpace = await session.requestReferenceSpace('local');
-  const loader = new THREE.GLTFLoader();
+  
+const loader = new THREE.GLTFLoader();
 let reticle;
 loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", function(gltf) {
   reticle = gltf.scene;
@@ -73,15 +75,15 @@ loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/sunflower/
   flower = gltf.scene;
 });
 
-  session.addEventListener("select", (event) => {
+session.addEventListener("select", (event) => {
   if (flower) {
     const clone = flower.clone();
     clone.position.copy(reticle.position);
     scene.add(clone);
   }
 });
-  
-  // Create a render loop that allows us to draw on the AR view.
+
+// Create a render loop that allows us to draw on the AR view.
 const onXRFrame = (time, frame) => {
   // Queue up the next draw request.
   session.requestAnimationFrame(onXRFrame);
@@ -104,7 +106,7 @@ const onXRFrame = (time, frame) => {
     camera.projectionMatrix.fromArray(view.projectionMatrix);
     camera.updateMatrixWorld(true);
 
-    const hitTestResults = frame.getHitTestResults(hitTestSource);
+const hitTestResults = frame.getHitTestResults(hitTestSource);
 if (hitTestResults.length > 0 && reticle) {
   const hitPose = hitTestResults[0].getPose(referenceSpace);
   reticle.visible = true;
