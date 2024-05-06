@@ -3,27 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premi il pulsante per l'AR</title>
-    <style>
-        /* Stile per il pulsante */
-        .button {
-            background-color: red;
-            color: white;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            font-size: 18px;
-            border: none;
-            cursor: pointer;
-            outline: none;
-        }
-    </style>
-</head>
-<body>
-    <!-- Il pulsante rosso -->
-    <button class="button" onclick="startAR()">Premimi</button>
+    <title>AR Cube</title>
 
-    <!-- Script JavaScript per avviare l'AR -->
+    <!-- three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body style="margin: 0;">
+    <!-- Pulsante per avviare AR -->
+    <button onclick="startAR()">Avvia AR</button>
+
+    <!-- Script per avviare AR -->
     <script>
         async function startAR() {
             try {
@@ -34,20 +23,22 @@
                 const canvas = document.createElement('canvas');
                 document.body.appendChild(canvas);
 
-                // Inizializza WebGL con il contesto compatibile per l'AR
+                // Inizializza WebGL con il contesto compatibile per AR
                 const gl = canvas.getContext('webgl', { xrCompatible: true });
 
                 // Crea una scena 3D
                 const scene = new THREE.Scene();
 
-                // Aggiungi un cubo verde alla scena
+                // Crea un cubo verde
                 const geometry = new THREE.BoxGeometry();
-                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Verde
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
                 const cube = new THREE.Mesh(geometry, material);
                 scene.add(cube);
 
                 // Crea una fotocamera
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+                // Setta la posizione della fotocamera
                 camera.position.z = 5;
 
                 // Crea un renderer per la scena
@@ -79,7 +70,7 @@
                     }
                 }
             } catch (error) {
-                console.error('Impossibile avviare l\'esperienza AR:', error);
+                console.error('Impossibile avviare AR:', error);
             }
         }
     </script>
