@@ -9,11 +9,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body style="margin: 0;">
-    <!-- Pulsante per avviare AR -->
-    <button onclick="startAR()">Avvia AR</button>
-
     <!-- Script per avviare AR -->
     <script>
+        let cubeVisible = false;
+
         async function startAR() {
             try {
                 // Richiedi l'autorizzazione per l'accesso alla fotocamera
@@ -65,14 +64,26 @@
                         camera.projectionMatrix.fromArray(view.projectionMatrix);
                         camera.updateMatrixWorld(true);
 
-                        // Renderizza la scena 3D
-                        renderer.render(scene, camera);
+                        // Se il cubo è visibile, renderizza la scena 3D
+                        if (cubeVisible) {
+                            renderer.render(scene, camera);
+                        }
                     }
                 }
+
+                // Mostra il cubo dopo un tocco sullo schermo
+                document.addEventListener('touchstart', () => {
+                    cubeVisible = true;
+                });
+
             } catch (error) {
                 console.error('Impossibile avviare AR:', error);
             }
         }
     </script>
+
+    <!-- Pulsante per avviare AR -->
+    <button onclick="startAR()">Avvia AR</button>
+
 </body>
 </html>
